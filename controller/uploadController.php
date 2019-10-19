@@ -9,19 +9,20 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 $fileTitle = $_POST['title'];
-$filePath = $_POST['file'];
+$file = $_POST['file'];
 $fileFormat = $_POST['format'];
 $fileDescription = $_POST['description'];
 $session = $_POST['session'];
 $type = $_POST['type'];
 
+// colocando diretório do arquivo manualmente para evitar erros 
+$filePath = 'rua.mp4';
+
 // recurando token de acesso do client
 if ($client->getAccessToken()) {
   $htmlBody = '';
   try{
-  //setando valores do víde
-    
-
+  //setando valores do arquivo
     $snippet = new Google_Service_YouTube_VideoSnippet();
     $snippet->setTitle($fileTitle);
     $snippet->setDescription($fileDescription);
@@ -70,45 +71,53 @@ if ($client->getAccessToken()) {
     while (!$status && !feof($handle)) {
       $chunk = fread($handle, $chunkSizeBytes);
       $status = $media->nextChunk($chunk);
-      // calculando processo do carregamento do vídeo, e verificando se não houve falhas
-      // enquanto envia as partes 
-      if($video.processingStatus != "failed"){
-        $progress = $video.processingDetails.processingProgress;
-        $timeLeft = $video.processingDetails.processingProgress.timeLeftMs;
-        $percentage = 100 * $video.parts_processed / $video.parts_total;
-      }
+     
     }
-    // continua verificando o progresso do envio do arquivo no processamento do YT
-    while($video.processingDetails.processingStatus != "terminated"){
-      if($video.processingStatus != "failed"){
-        $progress = $video.processingDetails.processingProgress;
-        $timeLeft = $video.processingDetails.processingProgress.timeLeftMs;
-        $percentage = 100 * $video.parts_processed / $video.parts_total;
-        $statusFinal = $video.processingDetails.processingStatus;
-        if($statusFinal== "succeeded"){
-          $percentage = "Sucesso ao realiazar Upload";
-              // inserindo no banco de dados
-          try{
-            $inserirVideo = $pdo->prepare("INSERT INTO video 
-            (formato, youtubeVideoID, tipo, dataUpload, sessao, titulo)
-              VALUES(:f, :yvi, :t, :up, :ss, :title)");
+    // link com processo e progresso
+    // https://developers.google.com/youtube/v3/docs/videos?hl=pt-br
+// objeto responsavel por verificar o status do progresso (terminou, se deu falha ao upar e tal)
+    $process =  new Google_Service_YouTube_VideoProcessingDetails(); 
+// objeto Progress responsavél por recuperar informações sobre o progresso do vídeo no youtube    
+    $progress =  new Google_Service_YouTube_VideoProcessingDetailsProcessingProgress();
+    // continua verificando o processo do envio do arquivo no processamento do YT
+    if( $process-> getProcessingStatus() != 'failed'){
+      while( $process->getProcessingStatus() == 'processing'){
+        if( $status->getUploadStatus() != 'failed'){
+        // pegando informações de progresso de envio (tempo estimado, porcentagem, status)  
+          $timeLeft =  $progress->getTimeLeftMs();
+          $percentage = 100 *  $progress->getPartsProcessed() / $progress->getPartsTotal();
         
-            $inserirVideo->bindValue(":f",  $fileFormat);
-            $inserirVideo->bindValue(":yvi", $videoId);
-            $inserirVideo->bindValue(":t", $type);
-            $inserirVideo->bindValue(":up", date("Y-m-d H:i:s"));
-            $inserirVideo->bindValue(":ss", 245);
-            $inserirVideo->bindValue(":title", $videoTitulo);
-            $inserirVideo->execute();
-          }catch (PDOException  $e){
-            $errorMysql = $e;
-          }
-         
+          
+        }else{
+          $ErrorAoUpar=  $process->getProcessingFailureReason();
         }
-      }else{
-        $ErrorAoUpar= $video.processingDetails.processingFailureReason;
-      }
     }
+    // se o status do upload for succeeded então ele foi realizado com sucesso
+    // então podemos inserir em nosso banco de dados
+    
+    if($uploadStatus== 'succeeded'){
+      $percentage = "Sucesso ao realiazar Upload";
+         
+      try{
+          $inserirVideo = $pdo->prepare("INSERT INTO video 
+          (formato, youtubeVideoID, tipo, dataUpload, sessao, titulo)
+            VALUES(:f, :yvi, :t, :up, :ss, :title)");
+      
+          $inserirVideo->bindValue(":f",  $fileFormat);
+          $inserirVideo->bindValue(":yvi", $videoId);
+          $inserirVideo->bindValue(":t", $type);
+          $inserirVideo->bindValue(":up", date("Y-m-d H:i:s"));
+          $inserirVideo->bindValue(":ss", 245);
+          $inserirVideo->bindValue(":title", $videoTitulo);
+          $inserirVideo->execute();
+      }catch (PDOException  $e){
+        $errorMysql = $e->getMessage();
+      }
+    
+    }
+}else{
+ $ErrorAoUpar=  $process->getProcessingFailureReason();;
+}
 
 
 
@@ -136,10 +145,8 @@ if ($client->getAccessToken()) {
   }
 
   // se não ocorrer erro ao fazer upload, ele vai tentar inserir no banco de dados
- 
-  
 
-  
+
   $_SESSION[$tokenSessionKey] = $client->getAccessToken();
 } elseif ($OAUTH2_CLIENT_ID == 'REPLACE_ME') {
   $htmlBody = <<<END
@@ -172,12 +179,13 @@ END;
   <script>
     const percent= <?php $percentage?>
     const timeLeft= <?php $timeLeft ?>
-    
-    while (percent <= 100) {
+    const processoStatus = <?php  $status->getUploadStatus();?>
+
+    while (processoStatus == 'processing') {
       console.log(`tempo Restante: ${timeLeft}    ------ `);
-      console.log(`-  ${timeLeft}%`);
+      console.log(`-  ${percent}%`);
     }
-    const statusFinal = <?php $statusFinal?>
+    const statusFinal = <?php  $status->getUploadStatus();?>
     console.log(statusFinal);
 
 </script>

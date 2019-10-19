@@ -1,4 +1,6 @@
 
++#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#
+Erros sobre diretório do vídeo - ainda não resolvi
 Warning: filesize(): stat failed for Colombia - 24746.mp4 in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 63
 
 Warning: fopen(Colombia - 24746.mp4): failed to open stream: No such file or directory in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 68
@@ -7,3 +9,13 @@ Warning: feof() expects parameter 1 to be resource, boolean given in /home/marco
 
 Warning: fread() expects parameter 1 to be resource, boolean given in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 71
 A service error occurred: Failed to parse Content-Range header.
++#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#
+
++#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#
+Erros pq não estava acessando atributos com getAtributo da classe
+objeto -> getAtributo();
+
+Warning: Use of undefined constant status - assumed 'status' (this will throw an Error in a future version of PHP) in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 83
+
+Recoverable fatal error: Object of class Google_Service_YouTube_VideoProcessingDetails could not be converted to string in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 83
++#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#

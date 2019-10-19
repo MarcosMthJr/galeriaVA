@@ -5,7 +5,7 @@ if ($client->getAccessToken()) {
   
   try {
     $channelsResponse = $youtube->channels->listChannels('contentDetails', array(
-      'mine' => 'true',
+      "id"=> "UCUG587rCiBmho3K5yBXXACw"
     ));
     $htmlBody = '';
         

@@ -1,4 +1,6 @@
-<?php require"../controller/listarController.php";?>
+<?php require"../controller/listarController.php";
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,7 +15,7 @@
   <title>GaleriaVA</title>
 </head>
 <body>
- 
+
 <header>
   <div class="logo">
     <i>X</i>
@@ -34,7 +36,8 @@
 <?= $htmlBody?>
 <section class="listaVideo">
 
-<?php foreach ($channelsResponse['items'] as $channel):
+<?php 
+ foreach ($channelsResponse['items'] as $channel):
            $uploadsListId = $channel['contentDetails']['relatedPlaylists']['uploads'];
            $playlistItemsResponse = $youtube->playlistItems->listPlaylistItems('snippet', array(
              'playlistId' => $uploadsListId,
@@ -55,7 +58,7 @@
 
 
        
-        <?php endforeach; endforeach;?>
+        <?php endforeach; endforeach; ?>
  
 
 

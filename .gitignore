@@ -1,3 +1,5 @@
 vendor
-vendor/
+extras
+*.mp4
+
 
