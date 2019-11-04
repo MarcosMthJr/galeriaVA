@@ -2,7 +2,7 @@
 require "auth/autenticacao.php";
 if ($client->getAccessToken()) {
   try {
-
+    header("Location: view/listar.php");
   } catch (Google_Service_Exception $e) {
     $htmlBody = sprintf('<p>A service error occurred: <code>%s</code></p>',
       htmlspecialchars($e->getMessage()));
@@ -38,13 +38,13 @@ END;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="view/css/normalize.css">
+    <link rel="stylesheet" href="view/css/bootstrap.min.css">
     <title>Document</title>
 </head>
 <body>
+  <?php include "view/header.php"; ?>
     <?= $htmlBody?>
-    <ul>
-      <li><a href="view/listar.php">Lista de Vídeos</a></li>
-      <li><a href="view/upload.php">Enviar Vídeo</li>
-    </ul>
+  <?php include "view/footer.php"; ?>
 </body>
 </html>

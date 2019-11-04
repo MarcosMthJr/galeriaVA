@@ -1,5 +1,8 @@
 vendor
 extras
 *.mp4
+test
+logs
+
 
 

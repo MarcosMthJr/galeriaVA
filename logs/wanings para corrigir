@@ -19,3 +19,26 @@ Warning: Use of undefined constant status - assumed 'status' (this will throw an
 
 Recoverable fatal error: Object of class Google_Service_YouTube_VideoProcessingDetails could not be converted to string in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 83
 +#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#
+
+
++#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#
+erros com js 
+Uncaught SyntaxError: Unexpected token 'const' linha 8 no controller de uploadController
+
+
+
++#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#
+precisa de passar parametros para saber partes totais e quantas partes faltam para upar .. e assim fazer calculo
+ou 
+uma solução é fazer o ajax na pagina do formulário apontando para a ação de upload no php e fazer a barra direito no ajax 
+Warning: Division by zero in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 85
+
+Warning: Division by zero in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 85
+
+Warning: Division by zero in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 85
+
+Warning: Division by zero in /home/marcosmth/projetos/youtubeAPI/controller/uploadController.php on line 85
+
++#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#+#+#+#+#+#+#+#+#+##+#+#+#+#
+erro com arquivo de delete
+Ocorreu um erro de serviço: { "error": { "errors": [ { "domain": "youtube.parameter", "reason": "missingRequiredParameter", "message": "No filter selected. Expected one of: id, chart, myRated, idParam", "locationType": "parameter", "location": "" } ], "code": 400, "message": "No filter selected. Expected one of: id, chart, myRated, idParam" } }

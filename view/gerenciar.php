@@ -34,14 +34,21 @@
 
           ?>
             <div class="video" >
-            <a class="videoLink" href="assistir.php?idVideo=<?= $video['snippet']['resourceId']['videoId']; ?>">
-          
+            
             <img src="<?= $video['snippet']['thumbnails']['high']['url']; ?>" class="card-img-top" alt="...">
               <div class="videoContent">
                 <h5 class="card-title"><?= nl2br($video['snippet']['title']); ?></h5>
                 <p class="card-text"><?= nl2br($video['snippet']['description']); ?></p>
               </div>
-              </a>
+            <div class="row btnGerencia">
+            <a class="videoLink" href="alterar.php?idVideo=<?= $video['snippet']['resourceId']['videoId']; ?>">
+            <button type="button" class="btn-gerenciador btn btn-primary">Editar</button>
+            </a>
+            <a class="videoLink" href="confirmDelete.php?idVideo=<?= $video['snippet']['resourceId']['videoId']; ?>">
+            <button type="button" class="btn-gerenciador btn btn-danger">Excluir</button>
+            </a>
+            </div>  
+
             </div>
         
          

@@ -1,6 +1,5 @@
 <?php
 require "../auth/autenticacao.php";
-
 if ($client->getAccessToken()) {
   
   try {
@@ -12,9 +11,12 @@ if ($client->getAccessToken()) {
   } catch (Google_Service_Exception $e) {
     $htmlBody = sprintf('<p>A service error occurred: <code>%s</code></p>',
       htmlspecialchars($e->getMessage()));
+     session_destroy();
+
   } catch (Google_Exception $e) {
     $htmlBody = sprintf('<p>An client error occurred: <code>%s</code></p>',
       htmlspecialchars($e->getMessage()));
+      session_destroy();
   }
   $_SESSION[$tokenSessionKey] = $client->getAccessToken();
 } elseif ($OAUTH2_CLIENT_ID == '') {
@@ -36,5 +38,3 @@ END;
   <p>You need to <a href="$authUrl">authorize access</a> before proceeding.<p>
 END;
 }
-
-?>
