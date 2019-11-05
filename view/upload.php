@@ -18,7 +18,7 @@
   <?php include "header.php"; ?>
   <main>
 
-    <form class="uploadForm" action="../controller/uploadController.php" method="POST" enctype="multipart/form-data">
+    <form enctype="multipart/form-data" class="uploadForm" action="../controller/uploadController.php" method="POST" >
     <div class="form-group col-md-6">
         <label>Arquivo</label>
         <input type="file" name="file" class="form-control" required>

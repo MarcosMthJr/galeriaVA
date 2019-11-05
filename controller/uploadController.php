@@ -7,17 +7,16 @@ require "../validation/frmUpload.php";
 error_reporting(E_ALL);
 /* Habilita a exibição de erros */
 ini_set("display_errors", 1);
-if($error == false){
+if ($error == false) {
   $fileTitle = $_POST['title'];
   $fileDescription = $_POST['description'];
   $session =  $_POST['session'];
   $type = $_POST['type'];
   $fileFormat = $_POST['format'];
   $filePath = $_FILES['file']['tmp_name'];
-  echo"legal acho que foi";
 
-   // recuperando token de acesso do client
-   if ($client->getAccessToken()) {
+  // recuperando token de acesso do client
+  if ($client->getAccessToken()) {
     $htmlBody = '';
     try {
       //setando valores do arquivo
@@ -66,65 +65,43 @@ if($error == false){
       $status = false;
       $handle = fopen($filePath, "rb");
 
-      // link com processo e progresso
-      // https://developers.google.com/youtube/v3/docs/videos?hl=pt-br
-      // objeto responsavel por verificar o status do progresso (terminou, se deu falha ao upar e tal)
-      //    $process =  new Google_Service_YouTube_VideoProcessingDetails(); 
-      // objeto Progress responsavél por recuperar informações sobre o progresso do vídeo no youtube    
-      //  $progress =  new Google_Service_YouTube_VideoProcessingDetailsProcessingProgress();
-      // continua verificando o processo do envio do arquivo no processamento do YT
-
-      // $progress->setPartsTotal(fread($handle, $chunkSizeBytes));
-
       while (!$status && !feof($handle)) {
 
         $chunk = fread($handle, $chunkSizeBytes);
         $status = $media->nextChunk($chunk);
-        /*$progress->setPartsProcessed($chunk); 
-      if( $process-> getProcessingStatus() != 'failed'){
-        // pegando informações de progresso de envio (tempo estimado, porcentagem, status)  
-          $timeLeft =  $progress->getTimeLeftMs();
-          $percentage = 100 *  $progress->getPartsProcessed() / $progress->getPartsTotal();
-          echo("<script>
-              console.log('tempo: ".$timeLeft." / ".$percentage."%')
-          </script>");
-          
-        }else{
-          $ErrorAoUpar=  $process->getProcessingFailureReason();
-        }
-
- // se o status do upload for succeeded então ele foi realizado com sucesso
-    // então podemos inserir em nosso banco de dados
- 
-
-        if($process->getProcessingStatus() == 'succeeded'){
-          $percentage = "Sucesso ao realiazar Upload";
-             
-            try{
-          
-                $inserirVideo = $pdo->prepare("INSERT INTO video 
-                (formato, youtubeVideoID, tipo, dataUpload, sessao, titulo)
-                  VALUES(:f, :yvi, :t, :up, :ss, :title)");
-            
-                $inserirVideo->bindValue(":f",  1);
-                $inserirVideo->bindValue(":yvi", $videoId);
-                $inserirVideo->bindValue(":t", $type);
-                $inserirVideo->bindValue(":up", date("Y-m-d H:i:s"));
-                $inserirVideo->bindValue(":ss", 245);
-                $inserirVideo->bindValue(":title", $videoTitulo);
-                $inserirVideo->execute();
-                echo("<script>
-                console.log(' inserido no banco de dados')i
-            </script>");
-            
-            }catch (PDOException  $e){
-              $errorMysql = $e->getMessage();
-            }
-          }else{
-            $ErrorAoUpar=  $process->getProcessingFailureReason();;
-           }
-        */
       }
+      $service = new Google_Service_YouTube($client);
+      $idQuery = [
+        'id'=>$status['id']
+      ];
+      $processamento = $service->videos->listVideos('snippet,processingDetails', $idQuery);
+      print_r($processamento);
+      // while ($processamento == "processing") {
+      //   if($processamento == "processing"){
+      //     echo "<script>console.log('processando!')</script>";
+      //   }   
+      //   elseif($processamento == "succeeded"){
+      //     echo "<script>console.log('sucesso dentro do while!')</script>";
+      //   }elseif ($processamento == "failed") {
+      //     echo "<script>console.log('falha dentro do while!')</script>";
+      //   }else{
+      //     echo"<script>console.log('não deu nada dentro do while!')</script>";
+      //   }
+      // }
+
+      // if($processamento == "processing"){
+      //   echo "<script>console.log('processando! fora do while')</script>";
+      // }   
+      // elseif($processamento == "succeeded"){
+      //   echo "<script>console.log('sucesso fora do while')</script>";
+      // }elseif ($processamento == "failed") {
+      //   echo "<script>console.log('falha fora do while')</script>";
+      // }elseif($processamento == "terminated"){
+      //   echo"<script>console.log('terminate fora do while')</script>";
+      // }else{
+      //   echo"<script>console.log('não deu nada fora do while')</script>";    
+      // }
+
 
       // If you want to make other calls after the file upload, set setDefer back to false
       try {
@@ -196,9 +173,8 @@ END;
   <p>You need to <a href="$authUrl">authorize access</a> before proceeding.<p>
 END;
   }
-
 }
- 
+
 
 ?>
 <!doctype html>
@@ -209,7 +185,7 @@ END;
 </head>
 
 <body>
-  <?=$htmlBody?>
+  <?= $htmlBody ?>
 
 </body>
 

@@ -3,14 +3,14 @@
 error_reporting(E_ALL);
 /* Habilita a exibição de erros */
 ini_set("display_errors", 1);
-
 $fileTitle = $_POST['title'];
-$file = $_FILES['file'];
-$fileFormat = $_POST['format'];
 $fileDescription = $_POST['description'];
-$session = $_POST['session'];
+$session =  $_POST['session'];
 $type = $_POST['type'];
+$fileFormat = $_POST['format'];
+$filePath = $_FILES['file'];
+echo $fileTitle." - ".$fileDescription." - ".$session." - ".$type." - ".$fileFormat." - ".$filePath['tmp_name']; 
 
-echo $fileTitle."<br>";
-echo $file['name'];
+
+
 ?>

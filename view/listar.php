@@ -24,12 +24,16 @@
 <div class="row">
     <div class="videoGroup">
       <?php
+      // foreach pecorrendo os items da resposta
       foreach ($channelsResponse['items'] as $channel) :
+        // query para busacar os videos na lista de upload
         $uploadsListId = $channel['contentDetails']['relatedPlaylists']['uploads'];
+        // aplicando query e delimitando quantidade de resultado
         $playlistItemsResponse = $youtube->playlistItems->listPlaylistItems('snippet', array(
           'playlistId' => $uploadsListId,
           'maxResults' => 10
         ));
+        // pegando cada video retornado
         foreach ($playlistItemsResponse['items'] as $video) :
 
           ?>
@@ -38,6 +42,7 @@
           
             <img src="<?= $video['snippet']['thumbnails']['high']['url']; ?>" class="card-img-top" alt="...">
               <div class="videoContent">
+                <p><?= $video['snippet']['thumbnails']['high']['url']; ?></p>
                 <h5 class="card-title"><?= nl2br($video['snippet']['title']); ?></h5>
                 <p class="card-text"><?= nl2br($video['snippet']['description']); ?></p>
               </div>

@@ -4,12 +4,12 @@ require "../config/conexao.php";
 
 //pegano id do video que vai ser deletado
 $idVideo  = $_GET['idVideo'];
-$sucess =  false;
+$success =  false;
 if ($client->getAccessToken()) {
   $youtube = new Google_Service_YouTube($client);
   try {
     $youtube->videos->delete($idVideo);
-    $sucess =  true;
+    $success =  true;
   } catch (Google_Service_Exception $e) {
     $htmlBody .= sprintf(
       '<p>A service error occurred: <code>%s</code></p>',
@@ -23,7 +23,7 @@ if ($client->getAccessToken()) {
   }
 
   /*PDO PARA FAZER EXCLUÃO NO BANCO DE DADOS*/
-  if($sucess == true){
+  if($success == true){
     try {
         $deletarVideo = $pdo->prepare("DELETE FROM video WHERE youtubeVideoId = :id");
         $deletarVideo->bindValue(":id", $idVideo);
